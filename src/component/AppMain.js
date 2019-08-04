@@ -9,52 +9,62 @@ class AppMain extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            items: [],
-            id: 0
         }
     }
 
     addItem = (name) => {
-        let { id, items } = this.state;
-        id += 1;
+        let { id, items } = this.props.context.state;
         if (name) {
             items.push(
                 {
-                    id,
+                    id: id + 1,
                     name,
                     isChecked: false
                 });
             this.setState({ id, items });
+            this.props.context.updateValue({ id: id + 1, items });
         }
     }
 
     handleActive = ({ id }) => {
-        const { items } = this.state;
+        const { items } = this.props.context.state;
         const newItems = items.map(item => {
             if (id === item.id) {
                 item.isChecked = !item.isChecked
             }
             return item;
         });
-        this.setState({ items: newItems });
-        console.log(this.props);
+        this.props.context.updateValue({ items: newItems });
     }
 
     handleDelete = (item) => {
-        const { items } = this.state;
+        const { items } = this.props.context.state;
         const id = item.id;
         const newItems = items.filter(it => it.id !== id);
-        this.setState({ items: newItems })
+        this.props.context.updateValue({ items: newItems })
     }
 
     render() {
+        console.log(this.props);
+        let items = this.props.context.state.items;
+        let link = this.props.location.pathname;
+        switch(link){
+            case '/active': 
+                items = items.filter(item => !item.isChecked);
+                break;
+            case '/completed': 
+                items = items.filter(item => item.isChecked);
+                break;    
+            default:
+                break;
+        }
         return (
             <div>
                 <section className="todoapp">
                     <div>
                         <Header onSubmit={this.addItem} />
-                        <Main items={this.state.items} handleActive={this.handleActive} handleDelete={this.handleDelete} />
-                        <Footer items={this.state.items} />
+                        <Main items={items} handleActive={this.handleActive} handleDelete={this.handleDelete} />
+                        <Footer items={this.props.context.state.items} />
                     </div>
                 </section>
             </div>

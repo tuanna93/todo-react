@@ -4,10 +4,10 @@ export default (props) => {
     return (
         <li className={item.isChecked ? "completed" : ""}>
             <div className="view">
-                <input className="toggle" type="checkbox" onClick={handleClick.bind(this, props)} />
+                <input className="toggle" type="checkbox" checked={item.isChecked} onChange={handleClick.bind(this, props)} />
                 <label>{item.name}</label>
                 <button className="destroy" onClick={handleDelete.bind(this, props)}></button>
-            </div><input className="edit" value={item.name} onDoubleClick={handleEdit.bind(this, props)} />
+            </div><input className="edit" readOnly value={item.name} onDoubleClick={handleEdit.bind(this, props)} />
         </li>
     )
 }

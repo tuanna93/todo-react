@@ -2,12 +2,6 @@ import React from 'react';
 import Item from './item';
 
 export default class Footer extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            items: []
-        }
-    }
 
     render() {
         return (

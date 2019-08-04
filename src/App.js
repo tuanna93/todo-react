@@ -10,14 +10,16 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: ["testt11"],
+      items: [],
       id: 0
     }
   }
-  updateValue = (key, value) => {
-    this.setState({ [key]: value });
+  updateValue = (state) => {
+    // console.log(state);
+    this.setState({ ...state });
   }
   render() {
+    console.log(this.state)
     return (
       <AppContext.Provider value={{ state: this.state, updateValue: this.updateValue }}>
         <Router>
