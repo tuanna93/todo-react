@@ -15,11 +15,9 @@ class App extends React.Component {
     }
   }
   updateValue = (state) => {
-    // console.log(state);
     this.setState({ ...state });
   }
   render() {
-    console.log(this.state)
     return (
       <AppContext.Provider value={{ state: this.state, updateValue: this.updateValue }}>
         <Router>

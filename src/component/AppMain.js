@@ -19,13 +19,22 @@ class AppMain extends React.Component {
                 {
                     id: id + 1,
                     name,
-                    isChecked: false
+                    isChecked: false,
                 });
             this.setState({ id, items });
             this.props.context.updateValue({ id: id + 1, items });
         }
     }
-
+    toggleAllItem = () => {
+        const { items } = this.props.context.state;
+        const itemsFilter = items.filter(i => !i.isChecked);
+        const condition = (itemsFilter && itemsFilter.length) ? true : false;
+        const newItems = items.map(item => {
+            item.isChecked = condition
+            return item;
+        });
+        this.props.context.updateValue({ items: newItems });
+    }
     handleActive = ({ id }) => {
         const { items } = this.props.context.state;
         const newItems = items.map(item => {
@@ -44,17 +53,33 @@ class AppMain extends React.Component {
         this.props.context.updateValue({ items: newItems })
     }
 
+    handleBlur = (id, value) => {
+        this.handleEdit(id, value);
+    }
+    handleEdit = (id, value) => {
+        const { items } = this.props.context.state;
+        const newItems = items.map(item => {
+            if (id === item.id) {
+                item.name = value
+            }
+            return item;
+        });
+        this.props.context.updateValue({ items: newItems });
+    }
+    clearAllItem = () => {
+        this.props.context.updateValue({ items: [] });
+    }
+
     render() {
-        console.log(this.props);
         let items = this.props.context.state.items;
         let link = this.props.location.pathname;
-        switch(link){
-            case '/active': 
+        switch (link) {
+            case '/active':
                 items = items.filter(item => !item.isChecked);
                 break;
-            case '/completed': 
+            case '/completed':
                 items = items.filter(item => item.isChecked);
-                break;    
+                break;
             default:
                 break;
         }
@@ -63,8 +88,8 @@ class AppMain extends React.Component {
                 <section className="todoapp">
                     <div>
                         <Header onSubmit={this.addItem} />
-                        <Main items={items} handleActive={this.handleActive} handleDelete={this.handleDelete} />
-                        <Footer items={this.props.context.state.items} />
+                        <Main toggleAllItem={this.toggleAllItem} items={items} handleActive={this.handleActive} handleDelete={this.handleDelete} handleDoubleClick={this.handleDoubleClick} handleBlur={this.handleBlur} />
+                        <Footer items={this.props.context.state.items} clearAllItem={this.clearAllItem} />
                     </div>
                 </section>
             </div>

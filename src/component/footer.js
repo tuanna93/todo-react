@@ -30,7 +30,7 @@ export default class Footer extends React.Component {
                     <li><NavLink exact to="/active" activeClassName="selected">Active</NavLink></li><span> </span>
                     <li><NavLink exact to="/completed" activeClassName="selected">Completed</NavLink></li>
                 </ul>
-                <button className="clear-completed">Clear completed</button>
+                <button className="clear-completed" onClick={this.props.clearAllItem}>Clear completed</button>
             </footer>
         );
     }
